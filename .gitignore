@@ -1,3 +1,4 @@
+.idea/
 manifest.json
-target/
 pio.log
+target
