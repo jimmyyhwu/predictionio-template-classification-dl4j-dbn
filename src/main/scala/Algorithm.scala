@@ -21,7 +21,6 @@ import org.nd4j.linalg.lossfunctions.LossFunctions
 case class AlgorithmParams(mult: Int) extends Params
 
 class Algorithm(val ap: AlgorithmParams)
-  // extends PAlgorithm if Model contains RDD[]
   extends P2LAlgorithm[PreparedData, Model, Query, PredictedResult] {
 
   @transient lazy val logger = Logger[this.type]
