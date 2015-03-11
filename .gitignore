@@ -1,4 +1,6 @@
-.idea/
 manifest.json
+target/
 pio.log
-target
+/pio.sbt
+.idea/
+

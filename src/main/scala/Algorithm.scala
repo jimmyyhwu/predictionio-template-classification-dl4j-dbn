@@ -4,6 +4,7 @@ import grizzled.slf4j.Logger
 import io.prediction.controller.P2LAlgorithm
 import io.prediction.controller.Params
 import org.apache.commons.math3.random.{MersenneTwister, RandomGenerator}
+import org.apache.spark.SparkContext
 import org.deeplearning4j.datasets.iterator.DataSetIterator
 import org.deeplearning4j.datasets.iterator.impl.IrisDataSetIterator
 import org.deeplearning4j.eval.Evaluation
@@ -25,7 +26,7 @@ class Algorithm(val ap: AlgorithmParams)
 
   @transient lazy val logger = Logger[this.type]
 
-  def train(data: PreparedData): Model = {
+  def train(sc: SparkContext, data: PreparedData): Model = {
 
     // ADDED BELOW LINES - deeplearning4j IRIS example
     /*val gen: RandomGenerator = new MersenneTwister(123)
