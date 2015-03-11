@@ -1,4 +1,4 @@
-package org.template.vanilla
+package org.template.classification
 
 import grizzled.slf4j.Logger
 import io.prediction.controller.P2LAlgorithm
@@ -28,7 +28,7 @@ class Algorithm(val ap: AlgorithmParams)
   def train(data: PreparedData): Model = {
 
     // ADDED BELOW LINES - deeplearning4j IRIS example
-    val gen: RandomGenerator = new MersenneTwister(123)
+    /*val gen: RandomGenerator = new MersenneTwister(123)
     val conf: NeuralNetConfiguration = new NeuralNetConfiguration.Builder().iterations(100).weightInit(WeightInit.DISTRIBUTION).dist(Distributions.normal(gen, 1e-3)).constrainGradientToUnitNorm(false).lossFunction(LossFunctions.LossFunction.RECONSTRUCTION_CROSSENTROPY).activationFunction(Activations.tanh).rng(gen).visibleUnit(RBM.VisibleUnit.GAUSSIAN).hiddenUnit(RBM.HiddenUnit.RECTIFIED).dropOut(0.3f).learningRate(1e-3f).nIn(4).nOut(3).build
     val d: DBN = new DBN.Builder().configure(conf).hiddenLayerSizes(Array[Int](3)).build
 
@@ -43,7 +43,7 @@ class Algorithm(val ap: AlgorithmParams)
     val eval: Evaluation = new Evaluation
     val output: INDArray = d.output(next.getFeatureMatrix)
     eval.eval(next.getLabels, output)
-    logger.info("Score " + eval.stats)
+    logger.info("Score " + eval.stats)*/
     // END OF ADDED LINES
 
     // Simply count number of events
@@ -54,13 +54,10 @@ class Algorithm(val ap: AlgorithmParams)
   }
 
   def predict(model: Model, query: Query): PredictedResult = {
-    logger.error(s"Prediction")
-
-
-
     // Prefix the query with the model data
-    val result = s"${model.mc}-${query.q}"
-    PredictedResult(p = result)
+    //val result = s"${model.mc}-${query.features}"
+    //PredictedResult(label = result)
+    PredictedResult(0)
   }
 }
 

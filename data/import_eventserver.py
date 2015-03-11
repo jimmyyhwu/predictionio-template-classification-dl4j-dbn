@@ -25,14 +25,14 @@ def import_events(client, file):
     )
     count += 1
   f.close()
-  print "%s records were imported." % count
+  print '%s records were imported.' % count
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser(
     description='Import sample data for IRIS example')
   parser.add_argument('--access_key', default='invalid_access_key')
-  parser.add_argument('--url', default="http://localhost:7070")
-  parser.add_argument('--file', default="./data/iris.dat")
+  parser.add_argument('--url', default='http://localhost:7070')
+  parser.add_argument('--file', default='./data/iris.dat')
 
   args = parser.parse_args()
   print args
