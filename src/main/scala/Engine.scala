@@ -4,11 +4,14 @@ import io.prediction.controller.IEngineFactory
 import io.prediction.controller.Engine
 
 case class Query(
-  val features: Array[Double]
+  sepal_length: Double,
+  sepal_width: Double,
+  petal_length: Double,
+  petal_width: Double
 ) extends Serializable
 
 case class PredictedResult(
-  val label: Int
+  val label: Array[Double]
 ) extends Serializable
 
 object ClassificationEngine extends IEngineFactory {

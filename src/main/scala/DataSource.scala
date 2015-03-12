@@ -5,10 +5,7 @@ import io.prediction.controller.EmptyEvaluationInfo
 import io.prediction.controller.EmptyActualResult
 import io.prediction.controller.Params
 import io.prediction.data.storage.{PropertyMap, Storage}
-
 import org.apache.spark.SparkContext
-import org.apache.spark.rdd.RDD
-
 import grizzled.slf4j.Logger
 import org.nd4j.linalg.api.ndarray.INDArray
 import org.nd4j.linalg.dataset.DataSet
@@ -26,15 +23,15 @@ class DataSource(val dsp: DataSourceParams)
   override
   def readTraining(sc: SparkContext): TrainingData = {
     val eventsDb = Storage.getPEvents()
-    val eventsRDD: RDD[(String, PropertyMap)] = eventsDb.aggregateProperties(
+    val events: Array[(String, PropertyMap)] = eventsDb.aggregateProperties(
       appId = dsp.appId,
       entityType = "record",
-      required = Some(List("sepal-length", "sepal-width", "petal-length", "petal-width", "species")))(sc)
+      required = Some(List("sepal-length", "sepal-width", "petal-length", "petal-width", "species")))(sc).collect
 
-    val features: INDArray = Nd4j.zeros(eventsRDD.count().toInt, 4)
-    val labels: INDArray = Nd4j.zeros(eventsRDD.count().toInt, 3)
+    val features: INDArray = Nd4j.zeros(events.length.toInt, 4)
+    val labels: INDArray = Nd4j.zeros(events.length.toInt, 3)
 
-    eventsRDD.zipWithIndex.foreach { case ((entityId, properties), row) =>
+    events.zipWithIndex.foreach { case ((entityId, properties), row) =>
       val feature = Nd4j.create(
         Array(properties.get[Double]("sepal-length"),
           properties.get[Double]("sepal-width"),
@@ -53,19 +50,16 @@ class DataSource(val dsp: DataSourceParams)
       labels.putRow(row.toInt, label)
     }
 
-    new TrainingData(new DataSet(features, labels))
-
-    /*val iter: DataSetIterator = new IrisDataSetIterator(150, 150)
-    val next = iter.next(110)
-    next.normalizeZeroMeanZeroUnitVariance
-    new TrainingData(next)*/
+    val data = new DataSet(features, labels)
+    data.normalizeZeroMeanZeroUnitVariance
+    new TrainingData(data)
   }
 }
 
 class TrainingData(
-  val records: DataSet
+  val data: DataSet
 ) extends Serializable {
   override def toString = {
-    s"events: [${records.numExamples()}] (${records.get(0)}...)"
+    s"events: [${data.numExamples()}] (${data.get(0)}...)"
   }
 }

@@ -16,11 +16,11 @@ def import_events(client, file):
       entity_type = 'record',
       entity_id = str(count),
       properties = {
-        'sepal-length' : float(data[0]),
-        'sepal-width' : float(data[1]),
-        'petal-length' : float(data[2]),
-        'petal-width' : float(data[3]),
-        'species' : data[4]
+        'sepal-length': float(data[0]),
+        'sepal-width': float(data[1]),
+        'petal-length': float(data[2]),
+        'petal-width': float(data[3]),
+        'species': data[4]
       }
     )
     count += 1
