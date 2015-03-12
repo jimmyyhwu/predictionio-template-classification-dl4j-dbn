@@ -5,11 +5,6 @@ import io.prediction.controller.P2LAlgorithm
 import io.prediction.controller.Params
 import org.apache.commons.math3.random.{MersenneTwister, RandomGenerator}
 import org.apache.spark.SparkContext
-import org.deeplearning4j.datasets.iterator.DataSetIterator
-import org.deeplearning4j.datasets.iterator.impl.IrisDataSetIterator
-import org.deeplearning4j.eval.Evaluation
-import org.nd4j.linalg.api.ndarray.INDArray
-import org.nd4j.linalg.dataset.DataSet
 import org.deeplearning4j.distributions.Distributions
 import org.deeplearning4j.models.classifiers.dbn.DBN
 import org.deeplearning4j.models.featuredetectors.rbm.RBM

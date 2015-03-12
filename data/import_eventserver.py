@@ -20,7 +20,7 @@ def import_events(client, file):
         'sepal-width' : float(data[1]),
         'petal-length' : float(data[2]),
         'petal-width' : float(data[3]),
-        'species' : int(data[4])
+        'species' : data[4]
       }
     )
     count += 1
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     description='Import sample data for IRIS example')
   parser.add_argument('--access_key', default='invalid_access_key')
   parser.add_argument('--url', default='http://localhost:7070')
-  parser.add_argument('--file', default='./data/iris.dat')
+  parser.add_argument('--file', default='./data/iris.data')
 
   args = parser.parse_args()
   print args
