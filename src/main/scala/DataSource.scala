@@ -12,6 +12,10 @@ import org.apache.spark.SparkContext._
 import org.apache.spark.rdd.RDD
 
 import grizzled.slf4j.Logger
+import org.deeplearning4j.datasets.iterator.DataSetIterator
+import org.deeplearning4j.datasets.iterator.impl.IrisDataSetIterator
+import org.nd4j.linalg.dataset.DataSet
+
 
 case class DataSourceParams(appId: Int) extends Params
 
@@ -25,20 +29,24 @@ class DataSource(val dsp: DataSourceParams)
   def readTraining(sc: SparkContext): TrainingData = {
     val eventsDb = Storage.getPEvents()
     // read all events of EVENT involving ENTITY_TYPE and TARGET_ENTITY_TYPE
-    val eventsRDD: RDD[Event] = eventsDb.find(
+    /*val eventsRDD: RDD[Event] = eventsDb.find(
       appId = dsp.appId,
       entityType = Some("ENTITY_TYPE"),
       eventNames = Some(List("EVENT")),
-      targetEntityType = Some(Some("TARGET_ENTITY_TYPE")))(sc)
+      targetEntityType = Some(Some("TARGET_ENTITY_TYPE")))(sc)*/
+    val iter: DataSetIterator = new IrisDataSetIterator(150, 150)
+    val next: DataSet = iter.next(110)
+    next.normalizeZeroMeanZeroUnitVariance
 
-    new TrainingData(eventsRDD)
+
+    new TrainingData(next)
   }
 }
 
 class TrainingData(
-  val events: RDD[Event]
+  val records: DataSet
 ) extends Serializable {
   override def toString = {
-    s"events: [${events.count()}] (${events.take(2).toList}...)"
+    s"events: [${records.numExamples()}] (${records.get(0)}...)"
   }
 }
